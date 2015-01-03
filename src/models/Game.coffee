@@ -1,10 +1,12 @@
 # TODO: Refactor this model to use an internal Game Model instead
 # of containing the game logic directly.
 class window.Game extends Backbone.Model
-  initialize: ->
+  initialize: (params) ->
     @set 'deck', deck = new Deck()
-    @set 'playerHand', deck.dealPlayer()
-    @set 'dealerHand', deck.dealDealer()
+    if (!params)
+      @set 'playerHand', deck.dealPlayer()
+      @set 'dealerHand', deck.dealDealer()
+
     @set 'winner', null
 
     @on 'change:winner', =>
@@ -38,7 +40,7 @@ class window.Game extends Backbone.Model
 
     if (@get 'dealerHand').bestScore() > 21
       @set 'winner', 'player'
-    else if (@get 'dealerHand').bestScore() >= 17
+    else if (@get 'dealerHand').bestScore() >= 17 and (@get 'playerHand').bestScore() < (@get 'dealerHand').bestScore()
       (@get 'dealerHand').stand()
     else
       (@get 'dealerHand').hit()
