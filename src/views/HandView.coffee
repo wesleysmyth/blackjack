@@ -7,7 +7,9 @@ class window.HandView extends Backbone.View
     @collection.on 'add remove change', => @render()
     @render()
     @dealerRevealed = false
-    @collection.at(0).on 'change:revealed', => @dealerRevealed = true
+    @collection.at(0).on 'change:revealed', =>
+      @dealerRevealed = true
+      @render()
 
   render: ->
     @$el.children().detach()
