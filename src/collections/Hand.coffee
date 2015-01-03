@@ -1,14 +1,23 @@
 class window.Hand extends Backbone.Collection
   model: Card
 
-  initialize: (array, @deck, @isDealer) ->
+  initialize: (array, deck, isDealer) ->
+    @deck = deck;
+    @isDealer = isDealer;
+    #TODO hit 21 on deal
+
 
   hit: ->
     @add(@deck.pop())
+    #TODO hit logic
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
   , 0
+
+  stand: ->
+    #TODO stand logic
+
 
   minScore: -> @reduce (score, card) ->
     score + if card.get 'revealed' then card.get 'value' else 0
