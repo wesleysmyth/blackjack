@@ -28,4 +28,4 @@ class window.Hand extends Backbone.Collection
     [@minScore(), @minScore() + 10 * @hasAce()]
 
   bestScore: ->
-    if @scores[1] > 21 then @scores[0] else @scores[1]
+    if @scores()[1] > 21 then @scores()[0] else @scores()[1]

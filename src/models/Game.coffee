@@ -7,7 +7,8 @@ class window.Game extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
     @set 'winner', null
 
-    if (@get 'playerHand').scores()[1] is 21 then (@get 'playerHand').stand()
+    @on 'change:winner', =>
+      console.log("#{@get 'winner'} won")
 
     (@get 'playerHand').on 'stand', =>
       @takeDealerTurn()
@@ -15,7 +16,8 @@ class window.Game extends Backbone.Model
     (@get 'playerHand').on 'add', =>
       if (@get 'playerHand').bestScore() == 21
         (@get 'playerHand').stand();
-      if (@get 'playerHand').scores[0] > 21
+      else if (@get 'playerHand').scores()[0] > 21
+        (@get 'dealerHand').at(0).flip()
         @set 'winner', 'dealer'
 
     (@get 'dealerHand').on 'stand', =>
@@ -24,13 +26,15 @@ class window.Game extends Backbone.Model
       else if (@get 'dealerHand').bestScore() < (@get 'playerHand').bestScore()
         @set 'winner', 'player'
       else  #push
-        @set 'winner', 'push'
-
+        @set 'winner', 'you both '
 
     (@get 'dealerHand').on 'add', =>
-      @takeDealerTurn();
+      @takeDealerTurn()
+
+    if (@get 'playerHand').scores()[1] is 21 then (@get 'playerHand').stand()
 
   takeDealerTurn: ->
+    (@get 'dealerHand').at(0).set('revealed', true)
 
     if (@get 'dealerHand').bestScore() > 21
       @set 'winner', 'player'
@@ -38,7 +42,6 @@ class window.Game extends Backbone.Model
       (@get 'dealerHand').stand()
     else
       (@get 'dealerHand').hit()
-
 
 
 
