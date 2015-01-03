@@ -4,19 +4,17 @@ class window.Hand extends Backbone.Collection
   initialize: (array, deck, isDealer) ->
     @deck = deck;
     @isDealer = isDealer;
-    #TODO hit 21 on deal
 
 
   hit: ->
     @add(@deck.pop())
-    #TODO hit logic
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
   , 0
 
   stand: ->
-    #TODO stand logic
+    @trigger('stand')
 
 
   minScore: -> @reduce (score, card) ->
@@ -29,4 +27,5 @@ class window.Hand extends Backbone.Collection
     # when there is an ace, it offers you two scores - the original score, and score + 10.
     [@minScore(), @minScore() + 10 * @hasAce()]
 
-
+  bestScore: ->
+    if @scores[1] > 21 then @scores[0] else @scores[1]
