@@ -5,7 +5,6 @@ class window.Hand extends Backbone.Collection
     @deck = deck;
     @isDealer = isDealer;
 
-
   hit: ->
     @add(@deck.pop())
 

@@ -1,5 +1,5 @@
 $(->
-  window.game = new Game();
-  new AppView(model: window.game).$el.appendTo 'body'
+  window.app = new App();
+  new AppView(model: window.app).$el.appendTo 'body'
 );
 

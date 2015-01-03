@@ -6,11 +6,17 @@ class window.HandView extends Backbone.View
   initialize: ->
     @collection.on 'add remove change', => @render()
     @render()
+    @dealerRevealed = false
+    @collection.at(0).on 'change:revealed', => @dealerRevealed = true
 
   render: ->
     @$el.children().detach()
     @$el.html @template @collection
     @$el.append @collection.map (card) ->
       new CardView(model: card).$el
-    @$('.score').text @collection.bestScore()
+    if !@dealerRevealed and @collection.isDealer
+      @$('.score').text @collection.at(1).get 'value'
+    else
+      @$('.score').text @collection.bestScore()
+
 
