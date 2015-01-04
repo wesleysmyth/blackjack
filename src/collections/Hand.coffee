@@ -7,6 +7,7 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     card = @deck.pop()
+    debugger;
     @add(card)
     card
 

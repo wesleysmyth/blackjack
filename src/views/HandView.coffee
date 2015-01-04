@@ -4,21 +4,22 @@ class window.HandView extends Backbone.View
   template: _.template '<h2><% if(isDealer){ %>Dealer<% }else{ %>You<% } %> (<span class="score"></span>)</h2>'
 
   initialize: ->
-    @collection.on 'add remove change', => @render()
+    @collection.on 'add remove change', (card) =>
+      console.log(@)
+      @render(card)
     @render()
-    @dealerRevealed = false
-    @collection.at(0).on 'change:revealed', =>
-      @dealerRevealed = true
-      @render()
 
-  render: ->
+  render: (addedCard) ->
+    console.log(@)
     @$el.children().detach()
     @$el.html @template @collection
     @$el.append @collection.map (card) ->
-      new CardView(model: card).$el
-    if !@dealerRevealed and @collection.isDealer
+      new CardView(model: card, isNew: card==addedCard).$el
+    if !@collection.at(0).get('revealed') and @collection.isDealer
       @$('.score').text @collection.at(1).get 'value'
+      console.log('there');
     else
       @$('.score').text @collection.bestScore()
+      console.log('here');
 
 
